@@ -3,12 +3,10 @@ const firebaseConfig = {
   authDomain: "jquery-firebase-4987e.firebaseapp.com",
   databaseURL: "https://jquery-firebase-4987e-default-rtdb.firebaseio.com",
   projectId: "jquery-firebase-4987e",
-  storageBucket: "jquery-firebase-4987e.firebasestorage.app",
+  storageBucket: "jquery-firebase-4987e.appspot.com",
   messagingSenderId: "280908793283",
-  appId: "1:280908793283:web:9b2e0de94c701c7b222976",
-  measurementId: "G-743REKNCHQ",
+  appId: "1:280908793283:web:9b2e0de94c701c7b222976"
 };
-
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database().ref("alunos");
