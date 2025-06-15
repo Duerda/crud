@@ -24,8 +24,12 @@ function carregarAlunos() {
           <td>${aluno.email}</td>
           <td>${aluno.telefone}</td>
           <td>
-            <button class="btn btn-warning btn-sm edit-btn" data-id="${key}">Editar</button>
-            <button class="btn btn-danger btn-sm delete-btn" data-id="${key}">Excluir</button>
+            <button class="btn btn-warning btn-sm edit-btn" data-id="${key}">
+              <i class="bi bi-pencil-fill"></i>
+            </button>
+            <button class="btn btn-danger btn-sm delete-btn" data-id="${key}">
+              <i class="bi bi-trash-fill"></i>
+            </button>
           </td>
         </tr>
       `);
@@ -39,13 +43,11 @@ $("#formAluno").submit(function (e) {
   const nome = $("#txtnome").val();
   const email = $("#txtemail").val();
   const telefone = $("#txttelefone").val();
-
   if (id) {
     db.child(id).update({ nome, email, telefone });
   } else {
     db.push({ nome, email, telefone });
   }
-
   this.reset();
   $("#id").val("");
 });
@@ -63,7 +65,7 @@ $(document).on("click", ".edit-btn", function () {
 
 $(document).on("click", ".delete-btn", function () {
   const id = $(this).data("id");
-  if (confirm("Deseja excluir este aluno?")) {
+  if (confirm("Tem certeza que deseja excluir este aluno?")) {
     db.child(id).remove();
   }
 });
