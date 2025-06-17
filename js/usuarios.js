@@ -9,19 +9,21 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database().ref("usuarios");
 
-function carregarUsuarios() {
-  db.on("value", (snapshot) => {
-    const tbody = $("#tabelaUsuarios");
+const dbAlunos = firebase.database().ref("alunos");
+
+function carregarAlunos() {
+  dbAlunos.on("value", (snapshot) => {
+    const tbody = $("#tabelaAlunos");
     tbody.empty();
     snapshot.forEach((child) => {
-      const user = child.val();
+      const aluno = child.val();
       const key = child.key;
       tbody.append(`
         <tr>
-          <td>${user.nome}</td>
-          <td>${user.email}</td>
+          <td>${aluno.nome}</td>
+          <td>${aluno.email}</td>
+          <td>${aluno.telefone}</td>
           <td>
             <button class="btn btn-warning btn-sm edit-btn" data-id="${key}">Editar</button>
             <button class="btn btn-danger btn-sm delete-btn" data-id="${key}">Excluir</button>
@@ -32,16 +34,17 @@ function carregarUsuarios() {
   });
 }
 
-$("#formUsuario").submit(function (e) {
+$("#formAluno").submit(function (e) {
   e.preventDefault();
   const id = $("#id").val();
   const nome = $("#txtnome").val();
   const email = $("#txtemail").val();
+  const telefone = $("#txttelefone").val();
 
   if (id) {
-    db.child(id).update({ nome, email });
+    dbAlunos.child(id).update({ nome, email, telefone });
   } else {
-    db.push({ nome, email });
+    dbAlunos.push({ nome, email, telefone });
   }
 
   this.reset();
@@ -50,19 +53,20 @@ $("#formUsuario").submit(function (e) {
 
 $(document).on("click", ".edit-btn", function () {
   const id = $(this).data("id");
-  db.child(id).get().then((snapshot) => {
-    const user = snapshot.val();
+  dbAlunos.child(id).get().then((snapshot) => {
+    const aluno = snapshot.val();
     $("#id").val(id);
-    $("#txtnome").val(user.nome);
-    $("#txtemail").val(user.email);
+    $("#txtnome").val(aluno.nome);
+    $("#txtemail").val(aluno.email);
+    $("#txttelefone").val(aluno.telefone);
   });
 });
 
 $(document).on("click", ".delete-btn", function () {
   const id = $(this).data("id");
-  if (confirm("Deseja excluir este usuário?")) {
-    db.child(id).remove();
+  if (confirm("Deseja excluir este aluno?")) {
+    dbAlunos.child(id).remove();
   }
 });
 
-carregarUsuarios();
+carregarAlunos();
