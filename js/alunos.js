@@ -1,12 +1,12 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyAQXcDs-sjnO4fYj8mrD7BDZp6kPW5DGMo",
-  authDomain: "jquery-firebase-4987e.firebaseapp.com",
-  databaseURL: "https://jquery-firebase-4987e-default-rtdb.firebaseio.com",
-  projectId: "jquery-firebase-4987e",
-  storageBucket: "jquery-firebase-4987e.appspot.com",
-  messagingSenderId: "280908793283",
-  appId: "1:280908793283:web:9b2e0de94c701c7b222976"
-};
+  apiKey: "AIzaSyCa-Tj46HGm5IkeIwPj5HrEkTrPiC5CloI",
+  authDomain: "jquery-816ed.firebaseapp.com",
+  databaseURL: "https://jquery-816ed-default-rtdb.firebaseio.com",
+  projectId: "jquery-816ed",
+  storageBucket: "jquery-816ed.firebasestorage.app",
+  messagingSenderId: "266132617291",
+  appId: "1:266132617291:web:a8247d1b631ac1ec8bf5ce",
+  measurementId: "G-LHVYV58S4V"
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database().ref("alunos");
