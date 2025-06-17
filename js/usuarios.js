@@ -1,33 +1,32 @@
-// Configuração do Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyAQXcDs-sjnO4fYj8mrD7BDZp6kPW5DGMo",
-  authDomain: "jquery-firebase-4987e.firebaseapp.com",
-  databaseURL: "https://jquery-firebase-4987e-default-rtdb.firebaseio.com",
-  projectId: "jquery-firebase-4987e",
-  storageBucket: "jquery-firebase-4987e.appspot.com",
-  messagingSenderId: "280908793283",
-  appId: "1:280908793283:web:9b2e0de94c701c7b222976"
+  apiKey: "AIzaSyCa-Tj46HGm5IkeIwPj5HrEkTrPiC5CloI",
+  authDomain: "jquery-816ed.firebaseapp.com",
+  databaseURL: "https://jquery-816ed-default-rtdb.firebaseio.com",
+  projectId: "jquery-816ed",
+  storageBucket: "jquery-816ed.firebasestorage.app",
+  messagingSenderId: "266132617291",
+  appId: "1:266132617291:web:a8247d1b631ac1ec8bf5ce",
+  measurementId: "G-LHVYV58S4V"
 };
 
-// Inicializa Firebase
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database().ref("usuarios");
 
-// Função para carregar os usuários na tabela
 function carregarUsuarios() {
   db.on("value", (snapshot) => {
     const tbody = $("#tabelaUsuarios");
     tbody.empty();
     snapshot.forEach((child) => {
-      const usuario = child.val();
+      const user = child.val();
       const key = child.key;
       tbody.append(`
         <tr>
-          <td>${usuario.nome}</td>
-          <td>${usuario.email}</td>
+          <td>${user.nome}</td>
+          <td>${user.email}</td>
           <td>
-            <button class="btn btn-warning btn-sm edit-btn" data-id="${key}">Editar</button>
-            <button class="btn btn-danger btn-sm delete-btn" data-id="${key}">Excluir</button>
+            <button class="btn btn-warning btn-sm edit-btn" data-id="${key}"><i class="bi bi-pencil-fill"></i></button>
+            <button class="btn btn-danger btn-sm delete-btn" data-id="${key}"><i class="bi bi-trash-fill"></i></button>
           </td>
         </tr>
       `);
@@ -35,7 +34,6 @@ function carregarUsuarios() {
   });
 }
 
-// Cadastrar ou editar usuário
 $("#formUsuario").submit(function (e) {
   e.preventDefault();
   const id = $("#id").val();
@@ -52,18 +50,16 @@ $("#formUsuario").submit(function (e) {
   $("#id").val("");
 });
 
-// Botão editar
 $(document).on("click", ".edit-btn", function () {
   const id = $(this).data("id");
   db.child(id).get().then((snapshot) => {
-    const usuario = snapshot.val();
+    const user = snapshot.val();
     $("#id").val(id);
-    $("#txtnome").val(usuario.nome);
-    $("#txtemail").val(usuario.email);
+    $("#txtnome").val(user.nome);
+    $("#txtemail").val(user.email);
   });
 });
 
-// Botão excluir
 $(document).on("click", ".delete-btn", function () {
   const id = $(this).data("id");
   if (confirm("Deseja excluir este usuário?")) {
@@ -71,5 +67,4 @@ $(document).on("click", ".delete-btn", function () {
   }
 });
 
-// Chama função ao iniciar
 carregarUsuarios();
