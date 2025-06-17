@@ -1,3 +1,4 @@
+// Configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAQXcDs-sjnO4fYj8mrD7BDZp6kPW5DGMo",
   authDomain: "jquery-firebase-4987e.firebaseapp.com",
@@ -8,22 +9,22 @@ const firebaseConfig = {
   appId: "1:280908793283:web:9b2e0de94c701c7b222976"
 };
 
+// Inicializa Firebase
 firebase.initializeApp(firebaseConfig);
+const db = firebase.database().ref("usuarios");
 
-const dbAlunos = firebase.database().ref("alunos");
-
-function carregarAlunos() {
-  dbAlunos.on("value", (snapshot) => {
-    const tbody = $("#tabelaAlunos");
+// Função para carregar os usuários na tabela
+function carregarUsuarios() {
+  db.on("value", (snapshot) => {
+    const tbody = $("#tabelaUsuarios");
     tbody.empty();
     snapshot.forEach((child) => {
-      const aluno = child.val();
+      const usuario = child.val();
       const key = child.key;
       tbody.append(`
         <tr>
-          <td>${aluno.nome}</td>
-          <td>${aluno.email}</td>
-          <td>${aluno.telefone}</td>
+          <td>${usuario.nome}</td>
+          <td>${usuario.email}</td>
           <td>
             <button class="btn btn-warning btn-sm edit-btn" data-id="${key}">Editar</button>
             <button class="btn btn-danger btn-sm delete-btn" data-id="${key}">Excluir</button>
@@ -34,39 +35,41 @@ function carregarAlunos() {
   });
 }
 
-$("#formAluno").submit(function (e) {
+// Cadastrar ou editar usuário
+$("#formUsuario").submit(function (e) {
   e.preventDefault();
   const id = $("#id").val();
   const nome = $("#txtnome").val();
   const email = $("#txtemail").val();
-  const telefone = $("#txttelefone").val();
 
   if (id) {
-    dbAlunos.child(id).update({ nome, email, telefone });
+    db.child(id).update({ nome, email });
   } else {
-    dbAlunos.push({ nome, email, telefone });
+    db.push({ nome, email });
   }
 
   this.reset();
   $("#id").val("");
 });
 
+// Botão editar
 $(document).on("click", ".edit-btn", function () {
   const id = $(this).data("id");
-  dbAlunos.child(id).get().then((snapshot) => {
-    const aluno = snapshot.val();
+  db.child(id).get().then((snapshot) => {
+    const usuario = snapshot.val();
     $("#id").val(id);
-    $("#txtnome").val(aluno.nome);
-    $("#txtemail").val(aluno.email);
-    $("#txttelefone").val(aluno.telefone);
+    $("#txtnome").val(usuario.nome);
+    $("#txtemail").val(usuario.email);
   });
 });
 
+// Botão excluir
 $(document).on("click", ".delete-btn", function () {
   const id = $(this).data("id");
-  if (confirm("Deseja excluir este aluno?")) {
-    dbAlunos.child(id).remove();
+  if (confirm("Deseja excluir este usuário?")) {
+    db.child(id).remove();
   }
 });
 
-carregarAlunos();
+// Chama função ao iniciar
+carregarUsuarios();
