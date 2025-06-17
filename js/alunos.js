@@ -9,11 +9,10 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
-const dbAlunos = firebase.database().ref("alunos");
+const db = firebase.database().ref("alunos");
 
 function carregarAlunos() {
-  dbAlunos.on("value", (snapshot) => {
+  db.on("value", (snapshot) => {
     const tbody = $("#tabelaAlunos");
     tbody.empty();
     snapshot.forEach((child) => {
@@ -36,16 +35,15 @@ function carregarAlunos() {
 
 $("#formAluno").submit(function (e) {
   e.preventDefault();
-
   const id = $("#id").val();
   const nome = $("#txtnome").val();
   const email = $("#txtemail").val();
   const telefone = $("#txttelefone").val();
 
   if (id) {
-    dbAlunos.child(id).update({ nome, email, telefone });
+    db.child(id).update({ nome, email, telefone });
   } else {
-    dbAlunos.push({ nome, email, telefone });
+    db.push({ nome, email, telefone });
   }
 
   this.reset();
@@ -54,7 +52,7 @@ $("#formAluno").submit(function (e) {
 
 $(document).on("click", ".edit-btn", function () {
   const id = $(this).data("id");
-  dbAlunos.child(id).get().then((snapshot) => {
+  db.child(id).get().then((snapshot) => {
     const aluno = snapshot.val();
     $("#id").val(id);
     $("#txtnome").val(aluno.nome);
@@ -66,7 +64,7 @@ $(document).on("click", ".edit-btn", function () {
 $(document).on("click", ".delete-btn", function () {
   const id = $(this).data("id");
   if (confirm("Deseja excluir este aluno?")) {
-    dbAlunos.child(id).remove();
+    db.child(id).remove();
   }
 });
 
